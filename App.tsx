@@ -9,6 +9,7 @@ import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Linking from "expo-linking";
 import { View, ActivityIndicator } from "react-native";
+import BottomTabs from "./components/BottomTabs";
 
 const Stack = createNativeStackNavigator();
 const navigationRef = React.createRef<any>();
@@ -59,10 +60,8 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
           <Stack.Screen name="Home">
-            {(props) => (
-              <ClientesScreen {...props} onLogout={() => setIsAuthenticated(false)} />
-            )}
-          </Stack.Screen>
+          {(props) => <BottomTabs {...props} onLogout={() => setIsAuthenticated(false)} />}
+        </Stack.Screen>
         ) : (
           <>
             <Stack.Screen name="Login">
