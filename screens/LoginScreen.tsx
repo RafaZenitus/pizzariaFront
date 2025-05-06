@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   iconButton: {
     position: "absolute",
     right: 10,
-    top: 8,
+    top: 3,
     padding: 4,
   },
 });

@@ -17,15 +17,23 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigation = useNavigation();
 
   const handleRegister = async () => {
-    if (!nome || !cpf || !email || !password) {
+    if (!nome || !cpf || !email || !password || !confirmPassword) {
       Alert.alert("Preencha todos os campos obrigatórios.");
       return;
     }
-
+  
+    if (password !== confirmPassword) {
+      Alert.alert("As senhas não coincidem.");
+      return;
+    }
+  
     try {
       await register({ nome, cpf, email, telefone, password });
       Alert.alert("Cadastro realizado com sucesso!");
@@ -34,6 +42,7 @@ const RegisterScreen = () => {
       Alert.alert("Erro ao cadastrar", "Verifique os dados e tente novamente.");
     }
   };
+  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -65,13 +74,38 @@ const RegisterScreen = () => {
           value={telefone}
           onChangeText={setTelefone}
         />
-        <TextInput
-          placeholder="Senha"
-          style={styles.input}
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+
+        <View style={styles.inputWrapper}>
+          <TextInput
+            placeholder="Senha"
+            style={styles.inputWithIcon}
+            secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.iconButton}
+          >
+            <Text style={{ fontSize: 18 }}>{showPassword ? "🙉" : "🙈"}</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.inputWrapper}>
+          <TextInput
+            placeholder="Confirmar Senha"
+            style={styles.inputWithIcon}
+            secureTextEntry={!showConfirmPassword}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+          <TouchableOpacity
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            style={styles.iconButton}
+          >
+            <Text style={{ fontSize: 18 }}>{showConfirmPassword ? "🙉" : "🙈"}</Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleRegister} style={styles.button}>
@@ -140,6 +174,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 12,
   },
+  inputWrapper: {
+    position: "relative",
+    marginBottom: 16,
+  },
+  inputWithIcon: {
+    height: 40,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    padding: 8,
+    borderRadius: 4,
+    paddingRight: 40,
+  },
+  iconButton: {
+    position: "absolute",
+    right: 10,
+    top: 3,
+    padding: 4,
+  },
+  
 });
 
 export default RegisterScreen;
