@@ -19,11 +19,12 @@ type Props = {
 const LoginScreen: React.FC<Props> = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👈 Adicionado
   const navigation = useNavigation();
 
   const handleLogin = async () => {
     try {
-      const response = await login({ email, password }) as { token: string };;
+      const response = (await login({ email, password })) as { token: string };
       await AsyncStorage.setItem("token", response.token);
 
       Alert.alert("Login realizado com sucesso!");
@@ -47,13 +48,21 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
           keyboardType="email-address"
         />
 
-        <TextInput
-          placeholder="Senha"
-          style={styles.input}
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+        <View style={styles.inputWrapper}>
+          <TextInput
+            placeholder="Senha"
+            style={styles.inputWithIcon}
+            secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.iconButton}
+          >
+            <Text style={{ fontSize: 18 }}>{showPassword ? "🙉" : "🙈"}</Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleLogin} style={styles.button}>
@@ -61,11 +70,15 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Register" as never)}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Register" as never)}
+        >
           <Text style={styles.toggleText}>Criar conta</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword" as never)}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ForgotPassword" as never)}
+        >
           <Text style={styles.toggleText}>Esqueci minha senha</Text>
         </TouchableOpacity>
       </View>
@@ -102,6 +115,18 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 4,
   },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#ddd",
+    borderWidth: 1,
+    borderRadius: 4,
+    marginBottom: 16,
+    paddingRight: 8,
+  },
+  eyeButton: {
+    padding: 8,
+  },
   buttonContainer: {
     marginBottom: 12,
   },
@@ -125,6 +150,24 @@ const styles = StyleSheet.create({
     color: "#e74c3c",
     textAlign: "center",
     marginBottom: 12,
+  },
+  inputWrapper: {
+    position: "relative",
+    marginBottom: 16,
+  },
+  inputWithIcon: {
+    height: 40,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    padding: 8,
+    borderRadius: 4,
+    paddingRight: 40, // espaço para o ícone
+  },
+  iconButton: {
+    position: "absolute",
+    right: 10,
+    top: 8,
+    padding: 4,
   },
 });
 
