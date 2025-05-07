@@ -4,13 +4,13 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
-  Alert,
   StyleSheet,
   ScrollView,
 } from "react-native";
 import { login } from "../services/authService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";  // Importando o Toast
 
 type Props = {
   onLogin: () => void;
@@ -27,10 +27,27 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
       const response = (await login({ email, password })) as { token: string };
       await AsyncStorage.setItem("token", response.token);
 
-      Alert.alert("Login realizado com sucesso!");
-      onLogin();
+      // Exibe o toast de sucesso
+      Toast.show({
+        type: 'success',
+        text1: 'Login realizado com sucesso!',
+        text2: 'Bem-vindo de volta!',
+        position: 'bottom',
+        visibilityTime: 3000,  // Ajuste conforme necessário
+        autoHide: true
+      });
+
+      onLogin();  // Atualiza o estado de autenticação
     } catch (error) {
-      Alert.alert("Erro ao fazer login", "Verifique seu email e senha.");
+      // Exibe o toast de erro
+      Toast.show({
+        type: 'error',
+        text1: 'Erro ao fazer login',
+        text2: 'Verifique seu email e senha.',
+        position: 'bottom',
+        visibilityTime: 3000,
+        autoHide: true
+      });
     }
   };
 
@@ -115,18 +132,6 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 4,
   },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#ddd",
-    borderWidth: 1,
-    borderRadius: 4,
-    marginBottom: 16,
-    paddingRight: 8,
-  },
-  eyeButton: {
-    padding: 8,
-  },
   buttonContainer: {
     marginBottom: 12,
   },
@@ -145,11 +150,6 @@ const styles = StyleSheet.create({
     color: "#3498db",
     textAlign: "center",
     marginBottom: 8,
-  },
-  errorText: {
-    color: "#e74c3c",
-    textAlign: "center",
-    marginBottom: 12,
   },
   inputWrapper: {
     position: "relative",

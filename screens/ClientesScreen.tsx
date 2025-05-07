@@ -48,7 +48,7 @@ const ClientesScreen = ({ onLogout }: any) => {
       <FlatList
         data={clientes}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 100 }} // Evita sobreposição com barra inferior
+        contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => (
           <View style={styles.card}>
             <Text style={styles.name}>{item.nome}</Text>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Linking from "expo-linking";
 import { View, ActivityIndicator } from "react-native";
 import BottomTabs from "./components/BottomTabs";
+import Toast from "react-native-toast-message";
 
 const Stack = createNativeStackNavigator();
 const navigationRef = React.createRef<any>();
@@ -28,7 +29,6 @@ export default function App() {
     if (url) {
       const parsed = Linking.parse(url);
       if (parsed.path === "reset-password" && parsed.queryParams?.token) {
-        // Aguarda a navegação estar montada
         setTimeout(() => {
           navigationRef.current?.navigate("ResetPassword", {
             token: parsed.queryParams?.token,
@@ -56,24 +56,29 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isAuthenticated ? (
-          <Stack.Screen name="Home">
-          {(props) => <BottomTabs {...props} onLogout={() => setIsAuthenticated(false)} />}
-        </Stack.Screen>
-        ) : (
-          <>
-            <Stack.Screen name="Login">
-              {(props) => <LoginScreen {...props} onLogin={() => setIsAuthenticated(true)} />}
+    <>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {isAuthenticated ? (
+            <Stack.Screen name="Home">
+              {(props) => (
+                <BottomTabs {...props} onLogout={() => setIsAuthenticated(false)} />
+              )}
             </Stack.Screen>
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </>
-        )}
+          ) : (
+            <>
+              <Stack.Screen name="Login">
+                {(props) => <LoginScreen {...props} onLogin={() => setIsAuthenticated(true)} />}
+              </Stack.Screen>
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </>
+          )}
+          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+          <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
 
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-        <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <Toast position="bottom" bottomOffset={100} visibilityTime={4000} autoHide={true} />
+    </>
   );
 }
