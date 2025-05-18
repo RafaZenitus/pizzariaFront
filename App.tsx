@@ -9,7 +9,7 @@ import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Linking from "expo-linking";
 import { View, ActivityIndicator } from "react-native";
-import BottomTabs from "./components/BottomTabs";
+import BottomTabs from "./navigation/BottomTabs";
 import Toast from "react-native-toast-message";
 
 const Stack = createNativeStackNavigator();

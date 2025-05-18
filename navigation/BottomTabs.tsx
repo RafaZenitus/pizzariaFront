@@ -4,7 +4,7 @@ import ClientesScreen from "../screens/ClientesScreen";
 import PedidosScreen from "../screens/PedidosScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import CadastroStackScreen from "../components/CadastroStackScreen"; // novo import
+import CadastroStackScreen from "./CadastroStackScreen"; // novo import
 
 const Tab = createBottomTabNavigator();
 
