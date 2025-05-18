@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import ClientesScreen from "./screens/ClientesScreen";
-import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
-import ResetPasswordScreen from "./screens/ResetPasswordScreen";
+import LoginScreen from "./screens/screenLogin/LoginScreen";
+import RegisterScreen from "./screens/screenLogin/RegisterScreen";
+import ClientesScreen from "./screens/screenUsuarios/UsersScreen";
+import ForgotPasswordScreen from "./screens/screenLogin/ForgotPasswordScreen";
+import ResetPasswordScreen from "./screens/screenLogin/ResetPasswordScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Linking from "expo-linking";
 import { View, ActivityIndicator } from "react-native";

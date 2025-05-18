@@ -8,8 +8,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { register } from "../services/authService";
-import Toast from 'react-native-toast-message';
+import { register } from "../../services/authService";
+import Toast from "react-native-toast-message";
 
 const RegisterScreen = () => {
   const [nome, setNome] = useState("");
@@ -76,10 +76,10 @@ const RegisterScreen = () => {
 
     if (hasError) {
       Toast.show({
-        type: 'error',
-        text1: 'Erro no cadastro',
-        text2: 'Verifique os campos destacados.',
-        position: 'bottom',
+        type: "error",
+        text1: "Erro no cadastro",
+        text2: "Verifique os campos destacados.",
+        position: "bottom",
         visibilityTime: 3000,
       });
       return;
@@ -88,19 +88,19 @@ const RegisterScreen = () => {
     try {
       await register({ nome, cpf, email, telefone, password });
       Toast.show({
-        type: 'success',
-        text1: 'Cadastro realizado!',
-        text2: 'Você já pode fazer login.',
-        position: 'bottom',
+        type: "success",
+        text1: "Cadastro realizado!",
+        text2: "Você já pode fazer login.",
+        position: "bottom",
         visibilityTime: 3000,
       });
       navigation.navigate("Login" as never);
     } catch (error) {
       Toast.show({
-        type: 'error',
-        text1: 'Erro ao cadastrar',
-        text2: 'Verifique os dados e tente novamente.',
-        position: 'bottom',
+        type: "error",
+        text1: "Erro ao cadastrar",
+        text2: "Verifique os dados e tente novamente.",
+        position: "bottom",
         visibilityTime: 3000,
       });
     }
@@ -168,7 +168,10 @@ const RegisterScreen = () => {
         <View style={styles.inputWrapper}>
           <TextInput
             placeholder="Confirmar Senha"
-            style={[styles.inputWithIcon, confirmSenhaError && styles.inputError]}
+            style={[
+              styles.inputWithIcon,
+              confirmSenhaError && styles.inputError,
+            ]}
             secureTextEntry={!showConfirmPassword}
             value={confirmPassword}
             onChangeText={(text) => {

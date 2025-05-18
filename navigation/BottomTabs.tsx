@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ClientesScreen from "../screens/ClientesScreen";
-import PedidosScreen from "../screens/PedidosScreen";
+import ClientesScreen from "../screens/screenUsuarios/UsersScreen";
+import PedidosScreen from "../screens/screenPedidos/PedidosScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import CadastroStackScreen from "./CadastroStackScreen"; // novo import

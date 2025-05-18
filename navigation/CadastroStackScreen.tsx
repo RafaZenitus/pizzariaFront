@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ItemCadastroScreen from "../screens/ItemCadastroScreen";
-import ItemCadastroNovoScreen from "../screens/ItemCadastroNovoScreen";
+import ItemCadastroScreen from "../screens/screenCadastroItem/ItemCadastroScreen";
+import ItemCadastroNovoScreen from "../screens/screenCadastroItem/ItemCadastroNovoScreen";
 
 const Stack = createNativeStackNavigator();
 
