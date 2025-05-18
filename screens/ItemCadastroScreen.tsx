@@ -14,7 +14,6 @@ const ItemCadastroScreen = () => {
     <View style={styles.container}>
       <Text style={styles.text}>Lista de Itens Cadastrados</Text>
 
-      {/* Botão flutuante */}
       <TouchableOpacity
         style={styles.floatingButton}
         onPress={() => navigation.navigate("ItemCadastroNovoScreen" as never)}
