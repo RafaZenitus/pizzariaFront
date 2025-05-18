@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ItemCadastroNovoScreen = () => {
   const navigation = useNavigation();
@@ -38,22 +39,32 @@ const ItemCadastroNovoScreen = () => {
     }
   };
 
-  const salvarItem = () => {
-    if (!nome || !preco) {
-      Alert.alert('Campos obrigatórios', 'Preencha o nome e o preço.');
-      return;
-    }
+const salvarItem = async () => {
+  if (!nome || !preco) {
+    Alert.alert('Campos obrigatórios', 'Preencha o nome e o preço.');
+    return;
+  }
 
-    const novoItem = {
-      nome,
-      preco,
-      info,
-      imagem,
-    };
+  const novoItem = {
+    id: Date.now(), // chave única
+    nome,
+    preco,
+    info,
+    imagem,
+  };
 
+  try {
+    const itensSalvos = await AsyncStorage.getItem('itens');
+    const itens = itensSalvos ? JSON.parse(itensSalvos) : [];
+    itens.push(novoItem);
+    await AsyncStorage.setItem('itens', JSON.stringify(itens));
     console.log('Item salvo:', novoItem);
     navigation.goBack();
-  };
+  } catch (error) {
+    Alert.alert('Erro', 'Não foi possível salvar o item.');
+  }
+};
+    
 
   return (
     <View style={styles.container}>
