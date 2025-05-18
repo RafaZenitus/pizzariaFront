@@ -62,23 +62,39 @@ export default function App() {
           {isAuthenticated ? (
             <Stack.Screen name="Home">
               {(props) => (
-                <BottomTabs {...props} onLogout={() => setIsAuthenticated(false)} />
+                <BottomTabs
+                  {...props}
+                  onLogout={() => setIsAuthenticated(false)}
+                />
               )}
             </Stack.Screen>
           ) : (
             <>
               <Stack.Screen name="Login">
-                {(props) => <LoginScreen {...props} onLogin={() => setIsAuthenticated(true)} />}
+                {(props) => (
+                  <LoginScreen
+                    {...props}
+                    onLogin={() => setIsAuthenticated(true)}
+                  />
+                )}
               </Stack.Screen>
               <Stack.Screen name="Register" component={RegisterScreen} />
             </>
           )}
-          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPasswordScreen}
+          />
           <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         </Stack.Navigator>
       </NavigationContainer>
 
-      <Toast position="bottom" bottomOffset={100} visibilityTime={4000} autoHide={true} />
+      <Toast
+        position="bottom"
+        bottomOffset={100}
+        visibilityTime={4000}
+        autoHide={true}
+      />
     </>
   );
 }
