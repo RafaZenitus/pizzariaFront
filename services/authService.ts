@@ -15,7 +15,7 @@ interface RegisterData {
 }
 
 export const login = async (data: LoginData) => {
-  const response = await api.post("/clientes/login", data);
+  const response = await api.post("/login", data);
   return response.data; 
 };
 
