@@ -2,9 +2,9 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ClientesScreen from "../screens/screenUsuarios/UsersScreen";
 import PedidosScreen from "../screens/screenPedidos/PedidosScreen";
+import CarrinhoScreen from "../screens/screenCarrinho/CarrinhoScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import CadastroStackScreen from "./CadastroStackScreen"; // novo import
 
 const Tab = createBottomTabNavigator();
 
@@ -19,11 +19,11 @@ const BottomTabs = ({ onLogout }: any) => {
           if (route.name === "Usuários") {
             iconName = "people-outline";
             IconComponent = Ionicons;
-          } else if (route.name === "Cadastro") {
-            iconName = "book-plus-outline";
-            IconComponent = MaterialCommunityIcons;
           } else if (route.name === "Pedidos") {
             iconName = "receipt-outline";
+            IconComponent = Ionicons;
+          } else if (route.name === "Carrinho") {
+            iconName = "cart-outline"; // ícone representativo de carrinho
             IconComponent = Ionicons;
           }
 
@@ -38,9 +38,9 @@ const BottomTabs = ({ onLogout }: any) => {
         {() => <ClientesScreen onLogout={onLogout} />}
       </Tab.Screen>
 
-      <Tab.Screen name="Cadastro" component={CadastroStackScreen} />
-
       <Tab.Screen name="Pedidos" component={PedidosScreen} />
+
+      <Tab.Screen name="Carrinho" component={CarrinhoScreen} />
     </Tab.Navigator>
   );
 };
