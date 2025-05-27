@@ -1,0 +1,55 @@
+# README - Implementação de Pedido e Carrinho com AsyncStorage
+
+## Visão Geral
+
+Esta entrega implementa a funcionalidade de gerenciamento de pedidos e carrinho de compras em uma aplicação React Native. Os pedidos são carregados a partir de uma API e exibidos ao usuário, que pode adicionar produtos ao carrinho, alterar quantidades e remover itens.
+
+## Persistência dos Dados com AsyncStorage
+
+Para garantir que os itens adicionados ao carrinho sejam mantidos entre sessões do aplicativo, utilizamos o AsyncStorage, que é um sistema de armazenamento local, assíncrono e persistente para React Native.
+
+### Funcionamento do AsyncStorage no carrinho:
+
+- **Armazenamento:** Cada modificação no carrinho — adicionar, remover ou alterar quantidade — atualiza o estado local e persiste os dados atualizados no AsyncStorage.
+- **Recuperação:** Ao carregar o carrinho (exemplo: na abertura da tela), os dados são recuperados do AsyncStorage para manter a continuidade da experiência do usuário.
+- **Validação:** Durante a recuperação, verifica-se se os dados possuem as propriedades esperadas, como a quantidade dos itens, para garantir a integridade dos dados e evitar erros no app.
+
+## Benefícios da Implementação
+
+- **Persistência entre sessões:** O carrinho mantém seu conteúdo mesmo após fechar e abrir o aplicativo.
+- **Melhora na experiência do usuário:** O usuário não perde os itens adicionados, facilitando o uso e aumentando a confiança no app.
+- **Solução simples e eficaz:** AsyncStorage é leve, fácil de integrar e oferece desempenho adequado para armazenar dados do carrinho localmente.
+
+# Configuração do Projeto
+
+## 1. Configuração do IP no React Native
+
+Para que o app React Native consiga se comunicar com o backend, é necessário configurar o endereço base da API apontando para o IP da máquina onde o servidor está rodando.
+
+No arquivo onde você instancia o Axios (exemplo: `api.ts` ou similar), altere o `baseURL` para o IP correto da sua máquina local na rede:
+
+```ts
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: 'http://SEU_IP_LOCAL:8080', // Substitua SEU_IP_LOCAL pelo IP da sua máquina
+});
+
+export default api;
+
+## Configuração do Banco de Dados MySQL
+
+A aplicação utiliza o banco de dados MySQL para armazenar informações da pizzaria, como produtos e pedidos.
+
+### Passos para criar e configurar o banco no MySQL Workbench
+
+1. **Abrir MySQL Workbench**  
+   Conecte-se ao servidor MySQL local (geralmente `localhost` na porta padrão `3306`).  
+
+2. **Criar o banco de dados**  
+   Na aba de query (SQL Editor), execute o comando abaixo para criar o banco:  
+   ```sql
+   CREATE DATABASE pizzaria;
+   USE pizzaria;
+
+
