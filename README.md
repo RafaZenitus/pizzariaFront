@@ -96,3 +96,8 @@ A aplicação utiliza o banco de dados MySQL para armazenar informações da piz
 Para a instalação dessas dependências no react native é necessário utilizar o comando (npm ci), que irá instalar apenas as dependências do package.json do aplicativo.
 
 
+### Inicialização do app
+
+ 1. Para iniciar o app é necessário digitar o comando npx expo start no terminal.
+
+
