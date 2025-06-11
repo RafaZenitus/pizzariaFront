@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: "bold",
+    marginTop: 32,
     marginBottom: 16,
     textAlign: "center",
   },
