@@ -35,7 +35,7 @@ const PedidosScreen = () => {
         return;
       }
 
-      const response = await axios.get("http://192.168.166.78:8080/pizzas", {
+      const response = await axios.get("http://192.168.2.114:8080/pizzas", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

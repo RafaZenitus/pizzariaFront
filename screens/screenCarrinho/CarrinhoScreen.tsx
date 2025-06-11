@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 type Pedido = {
   id: string;
@@ -12,18 +18,17 @@ type Pedido = {
 
 const CarrinhoScreen = () => {
   const [carrinho, setCarrinho] = useState<Pedido[]>([]);
+  const navigation = useNavigation();
 
   const carregarCarrinho = async () => {
-  const data = await AsyncStorage.getItem("carrinho");
-  const parsed = data ? JSON.parse(data) : [];
-  const atualizado = parsed.map((item: any) => ({
-    ...item,
-    quantidade: item.quantidade ?? 1,
-  }));
-
-  setCarrinho(atualizado);
-};
-
+    const data = await AsyncStorage.getItem("carrinho");
+    const parsed = data ? JSON.parse(data) : [];
+    const atualizado = parsed.map((item: any) => ({
+      ...item,
+      quantidade: item.quantidade ?? 1,
+    }));
+    setCarrinho(atualizado);
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -42,12 +47,11 @@ const CarrinhoScreen = () => {
   };
 
   const alterarQuantidade = async (id: string, delta: number) => {
-    const novoCarrinho = carrinho
-      .map((item) =>
-        item.id === id
-          ? { ...item, quantidade: Math.max(1, item.quantidade + delta) }
-          : item
-      );
+    const novoCarrinho = carrinho.map((item) =>
+      item.id === id
+        ? { ...item, quantidade: Math.max(1, item.quantidade + delta) }
+        : item
+    );
     atualizarCarrinho(novoCarrinho);
   };
 
@@ -64,10 +68,16 @@ const CarrinhoScreen = () => {
           <Text style={styles.price}>R$ {item.price.toFixed(2)}</Text>
           <Text style={styles.qtd}>Quantidade: {item.quantidade}</Text>
           <View style={styles.quantityControls}>
-            <TouchableOpacity onPress={() => alterarQuantidade(item.id, -1)} style={styles.qtyButton}>
+            <TouchableOpacity
+              onPress={() => alterarQuantidade(item.id, -1)}
+              style={styles.qtyButton}
+            >
               <Text style={styles.qtyButtonText}>-</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => alterarQuantidade(item.id, 1)} style={styles.qtyButton}>
+            <TouchableOpacity
+              onPress={() => alterarQuantidade(item.id, 1)}
+              style={styles.qtyButton}
+            >
               <Text style={styles.qtyButtonText}>+</Text>
             </TouchableOpacity>
           </View>
@@ -95,6 +105,12 @@ const CarrinhoScreen = () => {
             renderItem={renderItem}
           />
           <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
+          <TouchableOpacity
+            style={styles.checkoutButton}
+            onPress={() => navigation.navigate("FinalizarPedido" as never)}
+          >
+            <Text style={styles.checkoutButtonText}>Finalizar Compra</Text>
+          </TouchableOpacity>
         </>
       )}
     </View>
@@ -175,5 +191,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 16,
     color: "#2c3e50",
+  },
+  checkoutButton: {
+    backgroundColor: "#3498db",
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 16,
+    marginHorizontal: 40,
+  },
+  checkoutButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

@@ -11,6 +11,7 @@ import * as Linking from "expo-linking";
 import { View, ActivityIndicator } from "react-native";
 import BottomTabs from "./navigation/BottomTabs";
 import Toast from "react-native-toast-message";
+import FinalizarPedidoScreen from "./screens/screenCarrinho/FinalizarPedidoScreen";
 
 const Stack = createNativeStackNavigator();
 const navigationRef = React.createRef<any>();
@@ -86,6 +87,7 @@ export default function App() {
             component={ForgotPasswordScreen}
           />
           <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+          <Stack.Screen name="FinalizarPedido" component={FinalizarPedidoScreen} />
         </Stack.Navigator>
       </NavigationContainer>
 

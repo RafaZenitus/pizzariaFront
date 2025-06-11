@@ -14,7 +14,7 @@ const ForgotPasswordScreen = () => {
     }
 
     try {
-      await axios.post("http://192.168.18.5:8080/forgot-password", { email });
+      await axios.post("http://192.168.2.114:8080/forgot-password", { email });
 
       Alert.alert(
         "E-mail enviado com sucesso",
