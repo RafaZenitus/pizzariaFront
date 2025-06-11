@@ -95,14 +95,16 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     backgroundColor: "red",
-    padding: 12,
-    borderRadius: 10,
-    marginTop: 10,
-    alignItems: "center",
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 16,
+    marginHorizontal: 40,
   },
   logoutText: {
-    color: "#FFF",
+    color: "#fff",
+    fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
 
