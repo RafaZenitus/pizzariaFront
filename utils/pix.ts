@@ -1,6 +1,6 @@
 type PixParams = {
   chave: string;
-  tipoChave?: string; // opcional, pois só usamos a chave mesmo
+  tipoChave?: string;
   nome: string;
   cidade: string;
   valor: number;
@@ -13,7 +13,7 @@ function formatValue(id: string, value: string): string {
 }
 
 function crc16(payload: string): string {
-  payload += "6304"; // ID + tamanho
+  payload += "6304"; // CRC16-CCITT-FALSE, 0x63, 0x04
 
   const polinomio = 0x1021;
   let resultado = 0xffff;
