@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import QRCode from "react-native-qrcode-svg";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-toast-message";
-import { gerarPixPayload } from "../../utils/pix"; // ajuste o caminho conforme seu projeto
+import { gerarPixPayload } from "../../utils/pix";
 
 type Pedido = {
   id: string;
