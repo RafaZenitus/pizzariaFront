@@ -6,6 +6,7 @@ import CarrinhoScreen from "../screens/screenCarrinho/CarrinhoScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AddressRegisterScreen from "../screens/screenEndereco/GetEndereco";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import BebidasScreen from "../screens/screenPedidos/BebidasScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,12 +21,18 @@ const BottomTabs = ({ onLogout }: any) => {
           if (route.name === "Usuários") {
             iconName = "people-outline";
             IconComponent = Ionicons;
-          } else if (route.name === "Pedidos") {
-            iconName = "receipt-outline";
+          } else if (route.name === "Pizzas") {
+            iconName = "pizza-outline";
             IconComponent = Ionicons;
+          } else if (route.name === "Bebidas") {
+            iconName = "bottle-soda-outline";
+            IconComponent = MaterialCommunityIcons;
           } else if (route.name === "Carrinho") {
-            iconName = "cart-outline"; // ícone representativo de carrinho
+            iconName = "cart-outline";
             IconComponent = Ionicons;
+          } else if (route.name === "Endereços") {
+            iconName = "map-marker-radius-outline";
+            IconComponent = MaterialCommunityIcons;
           }
 
           return <IconComponent name={iconName} size={size} color={color} />;
@@ -38,22 +45,18 @@ const BottomTabs = ({ onLogout }: any) => {
       <Tab.Screen name="Usuários">
         {() => <ClientesScreen onLogout={onLogout} />}
       </Tab.Screen>
+      
 
-      <Tab.Screen name="Pedidos" component={PedidosScreen} />
-
+      <Tab.Screen name="Pizzas" component={PedidosScreen} />
+      <Tab.Screen name="Bebidas" component={BebidasScreen} />
+      <Tab.Screen name="Endereços" component={AddressRegisterScreen}/>
       <Tab.Screen name="Carrinho" component={CarrinhoScreen} />
 
-      <Tab.Screen
-          name="GetEndereço"
-          component={AddressRegisterScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home-map-marker" size={size} color={color} />
-            ),
-          }}
-      />
+      
+
     </Tab.Navigator>
   );
+  
 };
 
 export default BottomTabs;

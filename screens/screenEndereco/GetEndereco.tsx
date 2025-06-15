@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  SafeAreaView,
   View,
   Text,
   FlatList,
@@ -27,11 +28,14 @@ const ListaEnderecosScreen = () => {
     const fetchEnderecos = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
-        const response = await axios.get<Endereco[]>("http://192.168.18.5:8080/endereco", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get<Endereco[]>(
+          "http://192.168.18.5:8080/endereco",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setEnderecos(response.data);
       } catch (error) {
         console.log("Erro ao buscar endereços:", error);
@@ -42,7 +46,7 @@ const ListaEnderecosScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Meus Endereços</Text>
 
       <FlatList
@@ -55,6 +59,7 @@ const ListaEnderecosScreen = () => {
             {item.complemento ? <Text>Compl.: {item.complemento}</Text> : null}
           </View>
         )}
+        contentContainerStyle={{ paddingBottom: 20 }}
       />
 
       <TouchableOpacity
@@ -63,13 +68,23 @@ const ListaEnderecosScreen = () => {
       >
         <Text style={styles.buttonText}>Cadastrar novo endereço</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#f0f0f0" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 16 },
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    backgroundColor: "#f0f0f0",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginTop: 24, // desceu mais para não encostar no relógio
+    marginBottom: 16,
+    textAlign: "center", // centralizado horizontalmente
+  },
   enderecoItem: {
     backgroundColor: "#fff",
     padding: 12,
@@ -82,6 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     alignItems: "center",
     marginTop: 20,
+    marginHorizontal: 16, // espaçamento lateral no botão
   },
   buttonText: { color: "#fff", fontWeight: "bold" },
 });
