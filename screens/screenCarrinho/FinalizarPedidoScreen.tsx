@@ -14,6 +14,8 @@ import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-toast-message";
 import axios from "axios";
 import { gerarPixPayload } from "../../utils/pix";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 type Pedido = {
   id: string;
@@ -34,9 +36,12 @@ type Endereco = {
 const FinalizarPedidoScreen = () => {
   const [carrinho, setCarrinho] = useState<Pedido[]>([]);
   const [enderecos, setEnderecos] = useState<Endereco[]>([]);
-  const [enderecoSelecionado, setEnderecoSelecionado] = useState<Endereco | null>(null);
+  const [enderecoSelecionado, setEnderecoSelecionado] =
+    useState<Endereco | null>(null);
   const [mostrarPix, setMostrarPix] = useState(false);
   const [payloadPix, setPayloadPix] = useState("");
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     carregarCarrinho();
@@ -122,6 +127,13 @@ const FinalizarPedidoScreen = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={28} color="#333" />
+      </TouchableOpacity>
+
       <Text style={styles.title}>Finalizar Pedido</Text>
 
       <Text style={styles.subtitle}>Itens:</Text>
@@ -178,7 +190,10 @@ const FinalizarPedidoScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setMostrarPix(false)}
-              style={[styles.copyButton, { backgroundColor: "#c0392b", marginTop: 12 }]}
+              style={[
+                styles.copyButton,
+                { backgroundColor: "#c0392b", marginTop: 12 },
+              ]}
             >
               <Text style={styles.copyButtonText}>Fechar</Text>
             </TouchableOpacity>
@@ -287,4 +302,15 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
+  backButton: {
+  position: "absolute",
+  top: 40,
+  right: 16,
+  zIndex: 10,
+  backgroundColor: "#fff",
+  borderRadius: 20,
+  padding: 6,
+  elevation: 4,
+},
+
 });
