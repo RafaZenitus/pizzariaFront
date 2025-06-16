@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { login } from "../../services/authService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,7 +28,6 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
     try {
       const response = (await login({ email, password })) as { token: string };
       await AsyncStorage.setItem("token", response.token);
-      console.log("handleLogin chamado na função");
 
       Toast.show({
         type: "success",
@@ -40,7 +40,6 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
 
       onLogin();
     } catch (error) {
-      console.log("Erro no login:", error);
       Toast.show({
         type: "error",
         text1: "Erro ao fazer login",
@@ -53,79 +52,87 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.authContainer}>
-        <Text style={styles.title}>Login</Text>
+    
+    <ImageBackground
+      source={require("../../assets/pizzaMenu2.jpeg")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.authContainer}>
+          <Text style={styles.title}>Login</Text>
 
-        <TextInput
-          placeholder="Email"
-          style={styles.input}
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-
-        <View style={styles.inputWrapper}>
           <TextInput
-            placeholder="Senha"
-            style={styles.inputWithIcon}
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={setPassword}
+            placeholder="Email"
+            placeholderTextColor="#999"
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
           />
-          <TouchableOpacity
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.iconButton}
-          >
-            <Ionicons
-              name={showPassword ? "eye" : "eye-off"}
-              size={24}
-              color="#333"
+
+          <View style={styles.inputWrapper}>
+            <TextInput
+              placeholder="Senha"
+              placeholderTextColor="#999"
+              style={styles.inputWithIcon}
+              secureTextEntry={!showPassword}
+              value={password}
+              onChangeText={setPassword}
             />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.iconButton}
+            >
+              <Ionicons
+                name={showPassword ? "eye" : "eye-off"}
+                size={24}
+                color="#333"
+              />
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.buttonContainer}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={handleLogin}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Entrar</Text>
+            </TouchableOpacity>
+          </View>
+
           <TouchableOpacity
-            onPress={() => {
-              console.log("handleLogin chamado");
-              handleLogin();
-            }}
-            style={styles.button}
+            onPress={() => navigation.navigate("Register" as never)}
           >
-            <Text style={styles.buttonText}>Entrar</Text>
+            <Text style={styles.toggleText}>Criar conta</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ForgotPassword" as never)}
+          >
+            <Text style={styles.toggleText}>Esqueci minha senha</Text>
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Register" as never)}
-        >
-          <Text style={styles.toggleText}>Criar conta</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("ForgotPassword" as never)}
-        >
-          <Text style={styles.toggleText}>Esqueci minha senha</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#f0f0f0",
   },
   authContainer: {
     width: "80%",
     maxWidth: 400,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(32, 32, 32, 0.80)",
     padding: 16,
     borderRadius: 8,
     elevation: 3,
@@ -134,6 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 16,
     textAlign: "center",
+    color: "#fff",
   },
   input: {
     height: 40,
@@ -142,6 +150,28 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 8,
     borderRadius: 4,
+    backgroundColor: "#fff",
+    color: "#000",
+  },
+  inputWrapper: {
+    position: "relative",
+    marginBottom: 16,
+  },
+  inputWithIcon: {
+    height: 40,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    padding: 8,
+    borderRadius: 4,
+    paddingRight: 40,
+    backgroundColor: "#fff",
+    color: "#000",
+  },
+  iconButton: {
+    position: "absolute",
+    right: 10,
+    top: 3,
+    padding: 4,
   },
   buttonContainer: {
     marginBottom: 12,
@@ -158,27 +188,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   toggleText: {
-    color: "#3498db",
+    color: "#fff",
     textAlign: "center",
     marginBottom: 8,
-  },
-  inputWrapper: {
-    position: "relative",
-    marginBottom: 16,
-  },
-  inputWithIcon: {
-    height: 40,
-    borderColor: "#ddd",
-    borderWidth: 1,
-    padding: 8,
-    borderRadius: 4,
-    paddingRight: 40,
-  },
-  iconButton: {
-    position: "absolute",
-    right: 10,
-    top: 3,
-    padding: 4,
+    textDecorationLine: "underline",
   },
 });
 

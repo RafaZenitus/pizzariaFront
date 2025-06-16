@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { register } from "../../services/authService";
@@ -52,9 +53,7 @@ const RegisterScreen = () => {
     return resto === parseInt(cpf.charAt(10));
   };
 
-  const validarSenha = (senha: string): boolean => {
-    return senha.length >= 8;
-  };
+  const validarSenha = (senha: string): boolean => senha.length >= 8;
 
   const handleRegister = async () => {
     let hasError = false;
@@ -108,120 +107,136 @@ const RegisterScreen = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.authContainer}>
-        <Text style={styles.title}>Criar Conta</Text>
+    <ImageBackground
+      source={require("../../assets/pizzaMenu2.jpeg")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.authContainer}>
+          <Text style={styles.title}>Criar Conta</Text>
 
-        <TextInput
-          placeholder="Nome"
-          style={[styles.input, nomeError && styles.inputError]}
-          value={nome}
-          onChangeText={(text) => {
-            setNome(text);
-            setNomeError(false);
-          }}
-        />
-        <TextInput
-          placeholder="CPF"
-          style={[styles.input, cpfError && styles.inputError]}
-          value={cpf}
-          onChangeText={(text) => {
-            setCpf(text);
-            setCpfError(false);
-          }}
-        />
-        <TextInput
-          placeholder="Email"
-          style={[styles.input, emailError && styles.inputError]}
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            setEmailError(false);
-          }}
-          autoCapitalize="none"
-        />
-        <TextInput
-          placeholder="Telefone (opcional)"
-          style={styles.input}
-          value={telefone}
-          onChangeText={setTelefone}
-        />
-
-        <View style={styles.inputWrapper}>
           <TextInput
-            placeholder="Senha"
-            style={[styles.inputWithIcon, senhaError && styles.inputError]}
-            secureTextEntry={!showPassword}
-            value={password}
+            placeholder="Nome"
+            placeholderTextColor="#999"
+            style={[styles.input, nomeError && styles.inputError]}
+            value={nome}
             onChangeText={(text) => {
-              setPassword(text);
-              setSenhaError(false);
+              setNome(text);
+              setNomeError(false);
             }}
           />
-          <TouchableOpacity
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.iconButton}
-          >
-            <Ionicons
-              name={showPassword ? "eye" : "eye-off"}
-              size={24}
-              color="#333"
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.inputWrapper}>
           <TextInput
-            placeholder="Confirmar Senha"
-            style={[
-              styles.inputWithIcon,
-              confirmSenhaError && styles.inputError,
-            ]}
-            secureTextEntry={!showConfirmPassword}
-            value={confirmPassword}
+            placeholder="CPF"
+            placeholderTextColor="#999"
+            style={[styles.input, cpfError && styles.inputError]}
+            value={cpf}
             onChangeText={(text) => {
-              setConfirmPassword(text);
-              setConfirmSenhaError(false);
+              setCpf(text);
+              setCpfError(false);
             }}
           />
-          <TouchableOpacity
-            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-            style={styles.iconButton}
-          >
-            <Ionicons
-              name={showConfirmPassword ? "eye" : "eye-off"}
-              size={24}
-              color="#333"
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor="#999"
+            style={[styles.input, emailError && styles.inputError]}
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              setEmailError(false);
+            }}
+            autoCapitalize="none"
+          />
+          <TextInput
+            placeholder="Telefone (opcional)"
+            placeholderTextColor="#999"
+            style={styles.input}
+            value={telefone}
+            onChangeText={setTelefone}
+          />
+
+          <View style={styles.inputWrapper}>
+            <TextInput
+              placeholder="Senha"
+              placeholderTextColor="#999"
+              style={[styles.inputWithIcon, senhaError && styles.inputError]}
+              secureTextEntry={!showPassword}
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+                setSenhaError(false);
+              }}
             />
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.iconButton}
+            >
+              <Ionicons
+                name={showPassword ? "eye" : "eye-off"}
+                size={24}
+                color="#333"
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <TextInput
+              placeholder="Confirmar Senha"
+              placeholderTextColor="#999"
+              style={[
+                styles.inputWithIcon,
+                confirmSenhaError && styles.inputError,
+              ]}
+              secureTextEntry={!showConfirmPassword}
+              value={confirmPassword}
+              onChangeText={(text) => {
+                setConfirmPassword(text);
+                setConfirmSenhaError(false);
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={styles.iconButton}
+            >
+              <Ionicons
+                name={showConfirmPassword ? "eye" : "eye-off"}
+                size={24}
+                color="#333"
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={handleRegister} style={styles.button}>
+              <Text style={styles.buttonText}>Cadastrar</Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Login" as never)}
+          >
+            <Text style={styles.toggleText}>Já tem uma conta? Fazer login</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={handleRegister} style={styles.button}>
-            <Text style={styles.buttonText}>Cadastrar</Text>
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity onPress={() => navigation.navigate("Login" as never)}>
-          <Text style={styles.toggleText}>Já tem uma conta? Fazer login</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#f0f0f0",
   },
   authContainer: {
     width: "80%",
     maxWidth: 400,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(32, 32, 32, 0.80)",
     padding: 16,
     borderRadius: 8,
     elevation: 3,
@@ -230,6 +245,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 16,
     textAlign: "center",
+    color: "#fff",
   },
   input: {
     height: 40,
@@ -238,6 +254,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 8,
     borderRadius: 4,
+    backgroundColor: "#fff",
+    color: "#000",
   },
   inputWithIcon: {
     height: 40,
@@ -246,6 +264,8 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 4,
     paddingRight: 40,
+    backgroundColor: "#fff",
+    color: "#000",
   },
   inputError: {
     borderColor: "#e74c3c",
@@ -276,9 +296,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   toggleText: {
-    color: "#3498db",
+    color: "#fff",
     textAlign: "center",
     marginTop: 20,
+    textDecorationLine: "underline",
   },
 });
 
