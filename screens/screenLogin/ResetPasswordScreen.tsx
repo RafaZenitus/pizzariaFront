@@ -36,7 +36,7 @@ const ResetPasswordScreen = () => {
 
     try {
       await axios.put(
-        `http://192.168.18.5:8080/reset-password?token=${encodeURIComponent(effectiveToken.trim())}`,
+        `http://192.168.2.114:8080/reset-password?token=${encodeURIComponent(effectiveToken.trim())}`,
         {
           password: newPassword, // Aqui está a chave correta
         }

@@ -26,7 +26,7 @@ const AddressRegisterScreen = () => {
       const token = await AsyncStorage.getItem("token");
 
       const response = await axios.post(
-        "http://192.168.18.5:8080/endereco", // ajuste se necessário
+        "http://192.168.2.114:8080/endereco", // ajuste se necessário
         {
           cep,
           bairro,
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   button: {
-    backgroundColor: "#ee962c",
+    backgroundColor: "#27ae60",
     padding: 12,
     borderRadius: 6,
     alignItems: "center",

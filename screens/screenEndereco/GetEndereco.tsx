@@ -29,7 +29,7 @@ const ListaEnderecosScreen = () => {
       try {
         const token = await AsyncStorage.getItem("token");
         const response = await axios.get<Endereco[]>(
-          "http://192.168.18.5:8080/endereco",
+          "http://192.168.2.114:8080/endereco",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -75,15 +75,15 @@ const ListaEnderecosScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    padding: 16,
     backgroundColor: "#f0f0f0",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginTop: 24, // desceu mais para não encostar no relógio
+    marginTop: 24,
     marginBottom: 16,
-    textAlign: "center", // centralizado horizontalmente
+    textAlign: "center",
   },
   enderecoItem: {
     backgroundColor: "#fff",
@@ -92,14 +92,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: "#ee962c",
-    padding: 12,
-    borderRadius: 6,
-    alignItems: "center",
-    marginTop: 20,
-    marginHorizontal: 16, // espaçamento lateral no botão
+    backgroundColor: "#FFA500",
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 16,
+    marginHorizontal: 40,
   },
-  buttonText: { color: "#fff", fontWeight: "bold" },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
 });
 
 export default ListaEnderecosScreen;

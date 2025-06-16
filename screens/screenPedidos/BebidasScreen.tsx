@@ -35,7 +35,7 @@ const BebidasScreen = () => {
         return;
       }
 
-      const response = await axios.get("http://192.168.18.5:8080/bebidas", {
+      const response = await axios.get("http://192.168.2.114:8080/bebidas", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

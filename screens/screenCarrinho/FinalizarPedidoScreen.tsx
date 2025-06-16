@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   FlatList,
   Alert,
@@ -12,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import QRCode from "react-native-qrcode-svg";
 import * as Clipboard from "expo-clipboard";
 import Toast from "react-native-toast-message";
+import axios from "axios";
 import { gerarPixPayload } from "../../utils/pix";
 
 type Pedido = {
@@ -21,11 +21,26 @@ type Pedido = {
   quantidade: number;
 };
 
+type Endereco = {
+  id: number;
+  cep: string;
+  bairro: string;
+  rua: string;
+  numero: string;
+  complemento?: string;
+};
+
 const FinalizarPedidoScreen = () => {
   const [carrinho, setCarrinho] = useState<Pedido[]>([]);
-  const [endereco, setEndereco] = useState("");
+  const [enderecos, setEnderecos] = useState<Endereco[]>([]);
+  const [enderecoSelecionado, setEnderecoSelecionado] = useState<Endereco | null>(null);
   const [mostrarPix, setMostrarPix] = useState(false);
   const [payloadPix, setPayloadPix] = useState("");
+
+  useEffect(() => {
+    carregarCarrinho();
+    buscarEnderecos();
+  }, []);
 
   const carregarCarrinho = async () => {
     const data = await AsyncStorage.getItem("carrinho");
@@ -39,9 +54,22 @@ const FinalizarPedidoScreen = () => {
     setCarrinho(carrinhoCorrigido);
   };
 
-  useEffect(() => {
-    carregarCarrinho();
-  }, []);
+  const buscarEnderecos = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await axios.get<Endereco[]>(
+        "http://192.168.2.114:8080/endereco",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setEnderecos(response.data);
+    } catch (error) {
+      console.log("Erro ao buscar endereços:", error);
+    }
+  };
 
   const total = carrinho.reduce(
     (acc, item) => acc + item.price * item.quantidade,
@@ -49,26 +77,18 @@ const FinalizarPedidoScreen = () => {
   );
 
   const confirmarPedido = async () => {
-    if (!endereco.trim()) {
-      Alert.alert("Erro", "Por favor, preencha o endereço.");
+    if (!enderecoSelecionado) {
+      Alert.alert("Erro", "Por favor, selecione um endereço.");
       return;
     }
 
     const payload = gerarPixPayload({
       chave: "rafazenitus@gmail.com",
-      //tipoChave: "02",
       nome: normalizarTexto("PIZZARIA DO FOGO INFERNAL"),
       cidade: normalizarTexto("BARBACENA"),
       valor: total,
-      mensagem: "Pedido feito com o app Pizzaria do Fogo Infernal",
+      mensagem: `Entrega: ${enderecoSelecionado.rua}, ${enderecoSelecionado.numero}`,
     });
-
-    function normalizarTexto(text: string): string {
-      return text
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toUpperCase();
-    }
 
     setPayloadPix(payload);
     setMostrarPix(true);
@@ -83,6 +103,13 @@ const FinalizarPedidoScreen = () => {
       visibilityTime: 4000,
     });
   };
+
+  function normalizarTexto(text: string): string {
+    return text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toUpperCase();
+  }
 
   const renderItem = ({ item }: { item: Pedido }) => (
     <View style={styles.item}>
@@ -106,11 +133,24 @@ const FinalizarPedidoScreen = () => {
 
       <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Digite seu endereço de entrega"
-        value={endereco}
-        onChangeText={setEndereco}
+      <Text style={styles.subtitle}>Selecione o endereço de entrega:</Text>
+      <FlatList
+        data={enderecos}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={[
+              styles.enderecoItem,
+              enderecoSelecionado?.id === item.id && styles.enderecoSelecionado,
+            ]}
+            onPress={() => setEnderecoSelecionado(item)}
+          >
+            <Text>{`${item.rua}, ${item.numero} - ${item.bairro}`}</Text>
+            <Text>{`CEP: ${item.cep}`}</Text>
+            {item.complemento ? <Text>Compl.: {item.complemento}</Text> : null}
+          </TouchableOpacity>
+        )}
+        contentContainerStyle={{ paddingBottom: 16 }}
       />
 
       <TouchableOpacity style={styles.confirmButton} onPress={confirmarPedido}>
@@ -173,17 +213,26 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     textAlign: "center",
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
+  enderecoItem: {
+    backgroundColor: "#fff",
     padding: 12,
-    marginBottom: 16,
+    borderRadius: 6,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
+  enderecoSelecionado: {
+    borderColor: "#27ae60",
+    borderWidth: 2,
+    backgroundColor: "#eaffea",
   },
   confirmButton: {
     backgroundColor: "#27ae60",
-    paddingVertical: 14,
+    paddingVertical: 12,
     borderRadius: 8,
+    marginBottom: 32,
+    marginTop: 8,
+    marginHorizontal: 40,
   },
   confirmButtonText: {
     color: "#fff",
