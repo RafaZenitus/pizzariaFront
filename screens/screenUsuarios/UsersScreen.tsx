@@ -1,104 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
-  FlatList,
-  Alert,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import api from "../../api/api";
 
-interface Cliente {
-  id: number;
-  nome: string;
-  email: string;
-}
-
-const ClientesScreen = ({ onLogout }: any) => {
-  const [clientes, setClientes] = useState<Cliente[]>([]);
-
-  const fetchClientes = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      const response = await api.get<Cliente[]>("/clientes", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setClientes(response.data);
-    } catch (error) {
-      Alert.alert("Erro ao buscar clientes");
-    }
-  };
-
+const Inicio = ({ onLogout }: any) => {
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
     onLogout();
   };
 
-  useEffect(() => {
-    fetchClientes();
-  }, []);
-
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Clientes</Text>
+    <ImageBackground
+      source={require("../../assets/pizzaMenu4.jpeg")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.welcome}>Bem-vindo!</Text>
+        </View>
 
-      <FlatList
-        data={clientes}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.name}>{item.nome}</Text>
-            <Text style={styles.email}>{item.email}</Text>
-          </View>
-        )}
-      />
-
-      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-        <Text style={styles.logoutText}>Sair</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Text style={styles.logoutText}>Sair</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     padding: 20,
-    paddingBottom: 10,
-    backgroundColor: "#ffffff",
+    justifyContent: "center",
   },
-  header: {
-    fontSize: 24,
+  content: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  welcome: {
+    fontSize: 48,
     fontWeight: "bold",
-    marginBottom: 15,
     textAlign: "center",
-    marginTop: 25,
-  },
-  card: {
-    backgroundColor: "#FFF",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    elevation: 3,
-  },
-  name: {
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  email: {
-    fontSize: 14,
-    color: "#555",
+    color: "#fff",
+    textShadowColor: "#000",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   logoutButton: {
     backgroundColor: "red",
     paddingVertical: 12,
     borderRadius: 8,
-    marginTop: 16,
+    marginBottom: 30,
     marginHorizontal: 40,
+
   },
   logoutText: {
     color: "#fff",
@@ -108,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClientesScreen;
+export default Inicio;

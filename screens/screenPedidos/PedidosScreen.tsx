@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -55,32 +56,32 @@ const PedidosScreen = () => {
   }, []);
 
   const addToCart = async (pedido: Pedido) => {
-  try {
-    const cartData = await AsyncStorage.getItem("carrinho");
-    let cart: Pedido[] = cartData ? JSON.parse(cartData) : [];
-    
-    const exists = cart.find(item => item.id === pedido.id);
-    if (!exists) {
-      cart.push(pedido);
-      await AsyncStorage.setItem("carrinho", JSON.stringify(cart));
+    try {
+      const cartData = await AsyncStorage.getItem("carrinho");
+      let cart: Pedido[] = cartData ? JSON.parse(cartData) : [];
+
+      const exists = cart.find((item) => item.id === pedido.id);
+      if (!exists) {
+        cart.push(pedido);
+        await AsyncStorage.setItem("carrinho", JSON.stringify(cart));
+        Toast.show({
+          type: "success",
+          text1: `${pedido.name} adicionado ao carrinho!`,
+        });
+      } else {
+        Toast.show({
+          type: "info",
+          text1: `${pedido.name} já está no carrinho.`,
+        });
+      }
+    } catch (error) {
       Toast.show({
-        type: "success",
-        text1: `${pedido.name} adicionado ao carrinho!`,
-      });
-    } else {
-      Toast.show({
-        type: "info",
-        text1: `${pedido.name} já está no carrinho.`,
+        type: "error",
+        text1: "Erro ao adicionar ao carrinho",
+        text2: String(error),
       });
     }
-  } catch (error) {
-    Toast.show({
-      type: "error",
-      text1: "Erro ao adicionar ao carrinho",
-      text2: String(error),
-    });
-  }
-};
+  };
 
   const renderItem = ({ item }: { item: Pedido }) => (
     <View style={styles.card}>
@@ -103,36 +104,42 @@ const PedidosScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Cardápio</Text>
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <FlatList
-          data={pedidos}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-        />
-      )}
-    </SafeAreaView>
+    <ImageBackground
+      source={require("../../assets/pizzaMenu3.jpeg")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <SafeAreaView style={styles.container}>
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <FlatList
+            contentContainerStyle={styles.listContent}
+            data={pedidos}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={renderItem}
+          />
+        )}
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 236, 
   },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginTop: 32,
-    marginBottom: 16,
-    textAlign: "center",
+  listContent: {
+    paddingBottom: 100,
   },
   card: {
     flexDirection: "row",
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(32, 32, 32, 0.90)",
     borderRadius: 12,
     marginBottom: 16,
     overflow: "hidden",
@@ -149,19 +156,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   title: {
-    fontSize: 18,
+    color: "#eee",
+    fontSize: 22,
     fontWeight: "bold",
   },
   description: {
-    fontSize: 14,
-    color: "#555",
+    fontSize: 16,
+    color: "#eee",
   },
   details: {
-    fontSize: 13,
-    color: "#666",
+    fontSize: 16,
+    color: "#eee",
   },
   price: {
-    fontSize: 16,
+    fontSize: 30,
     color: "#27ae60",
     fontWeight: "600",
   },
@@ -171,8 +179,10 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 6,
     alignItems: "center",
+    
   },
   buttonText: {
+    fontSize: 20,
     color: "#fff",
     fontWeight: "bold",
   },

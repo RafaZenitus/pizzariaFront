@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { register } from "../../services/authService";
 import Toast from "react-native-toast-message";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const RegisterScreen = () => {
   const [nome, setNome] = useState("");
@@ -161,7 +162,11 @@ const RegisterScreen = () => {
             onPress={() => setShowPassword(!showPassword)}
             style={styles.iconButton}
           >
-            <Text style={{ fontSize: 18 }}>{showPassword ? "🙉" : "🙈"}</Text>
+            <Ionicons
+              name={showPassword ? "eye" : "eye-off"}
+              size={24}
+              color="#333"
+            />
           </TouchableOpacity>
         </View>
 
@@ -183,9 +188,11 @@ const RegisterScreen = () => {
             onPress={() => setShowConfirmPassword(!showConfirmPassword)}
             style={styles.iconButton}
           >
-            <Text style={{ fontSize: 18 }}>
-              {showConfirmPassword ? "🙉" : "🙈"}
-            </Text>
+            <Ionicons
+              name={showConfirmPassword ? "eye" : "eye-off"}
+              size={24}
+              color="#333"
+            />
           </TouchableOpacity>
         </View>
 

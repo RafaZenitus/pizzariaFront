@@ -38,25 +38,22 @@ const BottomTabs = ({ onLogout }: any) => {
           return <IconComponent name={iconName} size={size} color={color} />;
         },
         headerShown: false,
-        tabBarActiveTintColor: "#000",
+        tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "gray",
+        tabBarStyle: {
+          backgroundColor: "#000",
+        },
       })}
     >
       <Tab.Screen name="Usuários">
         {() => <ClientesScreen onLogout={onLogout} />}
       </Tab.Screen>
-      
-
+      <Tab.Screen name="Endereços" component={AddressRegisterScreen} />
       <Tab.Screen name="Pizzas" component={PedidosScreen} />
       <Tab.Screen name="Bebidas" component={BebidasScreen} />
-      <Tab.Screen name="Endereços" component={AddressRegisterScreen}/>
       <Tab.Screen name="Carrinho" component={CarrinhoScreen} />
-
-      
-
     </Tab.Navigator>
   );
-  
 };
 
 export default BottomTabs;

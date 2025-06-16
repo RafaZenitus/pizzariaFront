@@ -5,6 +5,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -93,52 +94,62 @@ const CarrinhoScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Seu Carrinho</Text>
-      {carrinho.length === 0 ? (
-        <Text style={styles.empty}>Carrinho vazio.</Text>
-      ) : (
-        <>
-          <FlatList
-            data={carrinho}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-          />
-          <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
-          <TouchableOpacity
-            style={styles.checkoutButton}
-            onPress={() => navigation.navigate("FinalizarPedido" as never)}
-          >
-            <Text style={styles.checkoutButtonText}>Finalizar Compra</Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
+    <ImageBackground
+      source={require("../../assets/pizzaMenu2.jpeg")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Seu Carrinho</Text>
+        {carrinho.length === 0 ? (
+          <Text style={styles.empty}>Carrinho vazio.</Text>
+        ) : (
+          <>
+            <FlatList
+              data={carrinho}
+              keyExtractor={(item) => item.id}
+              renderItem={renderItem}
+            />
+            <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
+            <TouchableOpacity
+              style={styles.checkoutButton}
+              onPress={() => navigation.navigate("FinalizarPedido" as never)}
+            >
+              <Text style={styles.checkoutButtonText}>Finalizar Compra</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+    </ImageBackground>
   );
 };
 
 export default CarrinhoScreen;
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     padding: 16,
+    paddingTop: 80,
   },
   title: {
     fontSize: 22,
     fontWeight: "bold",
-    marginTop: 32,
     marginBottom: 12,
     textAlign: "center",
+    color: "#fff",
   },
   empty: {
     fontSize: 16,
-    color: "gray",
+    color: "#fff",
     textAlign: "center",
     marginTop: 20,
   },
   item: {
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(32, 32, 32, 0.95)",
     padding: 12,
     borderRadius: 8,
     marginBottom: 10,
@@ -150,20 +161,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   name: {
-    fontSize: 16,
+    fontSize: 32,
+    color: "#eee",
     fontWeight: "600",
   },
   price: {
-    fontSize: 14,
+    fontSize: 30,
     color: "#27ae60",
   },
   qtd: {
-    fontSize: 14,
+    fontSize: 18,
+    color: "#eee",
     marginTop: 4,
   },
   quantityControls: {
     flexDirection: "row",
-    marginTop: 6,
+    marginTop: 16,
   },
   qtyButton: {
     backgroundColor: "#dcdcdc",
@@ -178,8 +191,8 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     backgroundColor: "#e74c3c",
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
     borderRadius: 6,
   },
   removeText: {
@@ -187,12 +200,22 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   total: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 16,
-    color: "#2c3e50",
-  },
+  fontSize: 36,
+  fontWeight: "bold",
+  textAlign: "center",
+  marginTop: 16,
+  backgroundColor: "rgba(32, 32, 32, 0.6)",
+  padding: 4,
+  borderRadius: 8,
+  paddingVertical: 6,
+  marginBottom: 8,
+  elevation: 2,
+  color: "#fff",
+  width: 300, 
+  
+  alignSelf: "center"
+  
+},
   checkoutButton: {
     backgroundColor: "#27ae60",
     paddingVertical: 12,

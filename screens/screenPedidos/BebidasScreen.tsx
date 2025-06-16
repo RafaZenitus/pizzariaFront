@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -103,36 +104,42 @@ const BebidasScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Bebidas</Text>
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <FlatList
-          data={bebidas}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-        />
-      )}
-    </SafeAreaView>
+    <ImageBackground
+      source={require("../../assets/pizzaMenu3.jpeg")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <SafeAreaView style={styles.container}>
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <FlatList
+            data={bebidas}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={renderItem}
+            contentContainerStyle={styles.listContent}
+          />
+        )}
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 236, 
   },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginTop: 32,
-    marginBottom: 16,
-    textAlign: "center",
+  listContent: {
+    paddingBottom: 100,
   },
   card: {
     flexDirection: "row",
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(32, 32, 32, 0.95)",
     borderRadius: 12,
     marginBottom: 16,
     overflow: "hidden",
@@ -149,19 +156,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   title: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
+    color: "#eee",
   },
   description: {
-    fontSize: 14,
-    color: "#555",
+    fontSize: 16,
+    color: "#eee",
   },
   details: {
-    fontSize: 13,
-    color: "#666",
+    fontSize: 16,
+    color: "#eee",
   },
   price: {
-    fontSize: 16,
+    fontSize: 30,
     color: "#27ae60",
     fontWeight: "600",
   },
@@ -173,6 +181,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
+    fontSize: 20,
     color: "#fff",
     fontWeight: "bold",
   },

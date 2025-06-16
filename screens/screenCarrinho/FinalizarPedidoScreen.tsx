@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  Modal,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import QRCode from "react-native-qrcode-svg";
@@ -157,24 +158,34 @@ const FinalizarPedidoScreen = () => {
         <Text style={styles.confirmButtonText}>Confirmar Pedido</Text>
       </TouchableOpacity>
 
-      {mostrarPix && (
-        <View style={styles.pixContainer}>
-          <Text style={styles.pixTitle}>Pagamento via Pix</Text>
-          <QRCode value={payloadPix} size={200} />
-          <Text selectable style={styles.pixCode}>
-            {payloadPix}
-          </Text>
-          <TouchableOpacity
-            style={styles.copyButton}
-            onPress={() => {
-              Clipboard.setStringAsync(payloadPix);
-              Alert.alert("Código copiado!", "Use no app do seu banco.");
-            }}
-          >
-            <Text style={styles.copyButtonText}>Copiar código Pix</Text>
-          </TouchableOpacity>
+      {/* Modal Pix */}
+      <Modal visible={mostrarPix} transparent animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.pixTitle}>Pagamento via Pix</Text>
+            <QRCode value={payloadPix} size={200} />
+            <Text selectable style={styles.pixCode}>
+              {payloadPix}
+            </Text>
+            <TouchableOpacity
+              style={styles.copyButton}
+              onPress={() => {
+                Clipboard.setStringAsync(payloadPix);
+                Alert.alert("Código copiado!", "Use no app do seu banco.");
+              }}
+            >
+              <Text style={styles.copyButtonText}>Copiar código Pix</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setMostrarPix(false)}
+              style={[styles.copyButton, { backgroundColor: "#c0392b", marginTop: 12 }]}
+            >
+              <Text style={styles.copyButtonText}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      )}
+      </Modal>
+
       <Toast />
     </View>
   );
@@ -190,11 +201,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    marginTop: 24,
     marginBottom: 16,
     textAlign: "center",
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "600",
     marginBottom: 8,
   },
@@ -205,7 +217,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   itemText: {
-    fontSize: 16,
+    fontSize: 20,
   },
   total: {
     fontSize: 18,
@@ -240,9 +252,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  pixContainer: {
-    marginTop: 24,
+  // Modal e Pix
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
     alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 24,
+    alignItems: "center",
+    marginHorizontal: 20,
+    elevation: 10,
   },
   pixTitle: {
     fontSize: 18,
@@ -252,6 +275,7 @@ const styles = StyleSheet.create({
   pixCode: {
     fontSize: 12,
     textAlign: "center",
+    marginBottom: 4,
     marginVertical: 12,
   },
   copyButton: {

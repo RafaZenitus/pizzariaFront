@@ -10,7 +10,8 @@ import {
 import { login } from "../../services/authService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import Toast from "react-native-toast-message";  // Importando o Toast
+import Toast from "react-native-toast-message";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 type Props = {
   onLogin: () => void;
@@ -28,27 +29,25 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
       await AsyncStorage.setItem("token", response.token);
       console.log("handleLogin chamado na função");
 
-      // Exibe o toast de sucesso
       Toast.show({
-        type: 'success',
-        text1: 'Login realizado com sucesso!',
-        text2: 'Bem-vindo de volta!',
-        position: 'bottom',
-        visibilityTime: 3000,  // Ajuste conforme necessário
-        autoHide: true
+        type: "success",
+        text1: "Login realizado com sucesso!",
+        text2: "Bem-vindo de volta!",
+        position: "bottom",
+        visibilityTime: 3000,
+        autoHide: true,
       });
 
-      onLogin();  // Atualiza o estado de autenticação
+      onLogin();
     } catch (error) {
-      // Exibe o toast de erro
       console.log("Erro no login:", error);
       Toast.show({
-        type: 'error',
-        text1: 'Erro ao fazer login',
-        text2: 'Verifique seu email e senha.',
-        position: 'bottom',
+        type: "error",
+        text1: "Erro ao fazer login",
+        text2: "Verifique seu email e senha.",
+        position: "bottom",
         visibilityTime: 3000,
-        autoHide: true
+        autoHide: true,
       });
     }
   };
@@ -79,20 +78,24 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
             onPress={() => setShowPassword(!showPassword)}
             style={styles.iconButton}
           >
-            <Text style={{ fontSize: 18 }}>{showPassword ? "🙉" : "🙈"}</Text>
+            <Ionicons
+              name={showPassword ? "eye" : "eye-off"}
+              size={24}
+              color="#333"
+            />
           </TouchableOpacity>
         </View>
 
         <View style={styles.buttonContainer}>
-        <TouchableOpacity
+          <TouchableOpacity
             onPress={() => {
               console.log("handleLogin chamado");
               handleLogin();
             }}
             style={styles.button}
-            >
+          >
             <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity
@@ -169,7 +172,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     borderRadius: 4,
-    paddingRight: 40, // espaço para o ícone
+    paddingRight: 40,
   },
   iconButton: {
     position: "absolute",
