@@ -100,4 +100,9 @@ Para a instalação dessas dependências no react native é necessário utilizar
 
  1. Para iniciar o app é necessário digitar o comando npx expo start no terminal.
 
+### Arquitetura do software
+
+![image](https://github.com/user-attachments/assets/6786c5e9-63c7-4820-bf19-9e79566d08b9)
+
+
 
